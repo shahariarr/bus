@@ -43,7 +43,7 @@
                             </select>
                         </div>
                         <div class="form-group  col">
-                        <label for="">To</label>
+                            <label for="">To</label>
 
                             <select class="form-control" name="to">
                                 @foreach ($loc as $item)
@@ -72,8 +72,8 @@
                                     src="https://script.viserlab.com/viserbus/assets/templates/basic/images/icon/wheel.svg"
                                     alt="icon"></span>
 
-                                    @for ($i = 1; $i <= 36; $i++)
-                            <div class="seat-wrapper">
+                            @for ($i = 1; $i <= 36; $i++)
+                                <div class="seat-wrapper">
                                     <div class="left-side">
                                         <div>
                                             <span class="seat" data-seat="{{ $i }}">
@@ -106,7 +106,7 @@
 
 
                                 </div>
-                                @endfor
+                            @endfor
 
 
                         </div>
@@ -126,47 +126,21 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
     <script>
-        var alloc = $('input[name="alloc[]"]').val().split(',');
-        var seat=[];
-        alloc.forEach(element => {
-                seat.push(Number(element));
-        });
-
-
-        $(document).ready(function() {
-            $('.seat').click(function() {
-                var id=$(this).data('seat');
-                if(!seat.find(x=>x==id)){
-                    seat.push(id);
-
-                }
-                //set background color
-                $(this).toggleClass('active');
-
-
-            });
-
-            $('button[type="submit"]').click(function(){
-                $('input[name="alloc[]"]').val(seat);
-            });
-
-        });
-
         $(document).ready(function($) {
             var $form = $('form');
-             $.ajax({
-                type:"GET",
-                url:"{{ route('getseat') }}",
-                success:function(data){
+            $.ajax({
+                type: "GET",
+                url: "{{ route('getseat') }}",
+                success: function(data) {
 
-                    var seat=data.toString().split(',');
-                    if(seat.length>0){
+                    var seat = data.toString().split(',');
+                    if (seat.length > 0) {
                         $('.seat-plan-inner').removeClass('d-none');
                     }
-                    var alloc=[];
+                    var alloc = [];
                     seat.forEach(element => {
-                        $('.seat').each(function(){
-                            if($(this).data('seat')==element){
+                        $('.seat').each(function() {
+                            if ($(this).data('seat') == element) {
                                 $(this).addClass('disable');
                                 $(this).off('click');
                                 alloc.push(Number(element));
@@ -177,7 +151,37 @@
                     $('input[name="alloc[]"]').val(alloc);
 
                 }
-             })
+            })
+        });
+
+        $(document).ready(function() {
+
+            var seat = [];
+            $('.seat').click(function() {
+                var alloc = $('input[name="alloc[]"]').val().split(',');
+                alloc.forEach(element => {
+                    if(!seat.find(x => x == element)){
+                        seat.push(Number(element));
+                    }
+
+                });
+                console.log(seat);
+                var id = $(this).data('seat');
+                if (!seat.find(x => x == id)) {
+                    seat.push(id);
+
+                }
+
+                //set background color
+                $(this).toggleClass('active');
+
+
+            });
+
+            $('button[type="submit"]').click(function() {
+                $('input[name="alloc[]"]').val(seat);
+            });
+
         });
     </script>
 </body>
