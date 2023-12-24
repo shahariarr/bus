@@ -125,6 +125,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function($) {
             var $form = $('form');
@@ -172,18 +173,35 @@
 
                 }
 
-                //set background color
                 $(this).toggleClass('active');
 
 
             });
 
             $('button[type="submit"]').click(function() {
+                var count=$('input[name="alloc[]"]').val().split(',').length;
+                if(count==36){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'All seat are booked!',
+                    })
+                    return false;
+                }
                 $('input[name="alloc[]"]').val(seat);
             });
 
         });
     </script>
+    @if(Session::has('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ Session::get('success') }}',
+            })
+        </script>
+    @endif
 </body>
 
 </html>
